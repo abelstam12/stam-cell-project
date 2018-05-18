@@ -36,7 +36,6 @@ function update() {
     let element = select();
     let x = element[0];
     let y = element[1];
-    //console.log('x', x,'y', y);
     flash(x, y);
 
     // symmetric
@@ -49,12 +48,18 @@ function update() {
 
 // pushes the cells in front of dividing cell towards the edge of the crypt
 function push_cells(x, y, direction) {
-    push_cells = [];
-    i = 1;
-    while (x + i * direction[0] < size && y + i * direction[j] < size) {
-            push_cells.push([x + i * direction[0], y + i * direction[1]])
+    cells = [];
+    i = 0;
+    while (x + i * direction[0] < size && y + i * direction[1] < size && x + i * direction[0] >= 0 && y + i * direction[1] >=0) {
+        cells.push([x + i * direction[0], y + i * direction[1]])
+        i += 1;
     }
-
+    offspring[composition_matrix[cells[cells.length - 1][0]][cells[cells.length - 1][1]]] += 1
+    // shift each element in the specified direction
+    cells = cells.reverse();
+    for (let i = 0; i < cells.length - 1; i ++) {
+        composition_matrix[cells[i][0]][cells[i][1]] = composition_matrix[cells[i + 1][0]][cells[i + 1][1]]
+    }
 }
 
 function divide_symmetric(x, y) {
@@ -69,7 +74,7 @@ function divide_symmetric(x, y) {
         offspring[composition_matrix[x][y]] = offspring[composition_matrix[x][y]] + 1;
         return;
     }
-    composition_matrix[hop_to[0]][hop_to[1]] = composition_matrix[x][y];
+    push_cells(x, y, direction);
     return;
 }
 
