@@ -32,18 +32,38 @@ function update() {
         return;
     }
 
+    document.getElementById('sym').disabled = true;
+    document.getElementById('asym').disabled = true;
+
     draw_matrix(composition_matrix)
     let element = select();
     let x = element[0];
     let y = element[1];
     flash(x, y);
-
     // symmetric
     if (gm == 2) {
         divide_symmetric(x, y);
     } else {
         divide_asymmetric(x, y);
     }
+
+    if(crypt_is_singular()) {
+
+    }
+}
+
+function crypt_is_singular() {
+    prev_element = composition_matrix[0][0]
+    for (let row in composition_matrix) {
+        for (let element in row) {
+            if (element != 0 && emement != 'black') {
+                if (prev_element != element) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
 }
 
 // pushes the cells in front of dividing cell towards the edge of the crypt
@@ -210,13 +230,13 @@ function draw_matrix(draw_this) {
             }
         }
     }
-    return true
+    return true;
 }
 
 function get_offset(x, y) {
-    canvas = document.getElementById('canvas')
-    x_s = canvas.width / 2.0 - 140
-    y_s =  canvas.height / 2.0 - 140
+    canvas = document.getElementById('canvas');
+    x_s = canvas.width / 2.0 - 140;
+    y_s =  canvas.height / 2.0 - 140;
     return [x_s + x * 50, y_s + y * 50];
 }
 

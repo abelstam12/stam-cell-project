@@ -2,31 +2,28 @@
 <html>
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="script/stamcel.js"
-    ></script>
+    <link rel="stylesheet" href="static/css/project.css">
+    <script src="static/script/stamcel.js"></script>
 </head>
 <body>
-    <div style="padding:5px;">
+    <div class="button_menu">
         <div class="row">
             <div class="col-sm-6">
-                <label>
-                    Divide mechanisme: 
-                    <label>
-                    <input type="radio" id = "sym" name="game_mode" value="2"> Symmetric <br>
-                    </label>
-                    <label></label>
-                    <input type="radio" id = "asym" name="game_mode" value="1"> Antisymmetric <br>
-                    </label>
-                </label>
+                Divide mechanism:
+                <br>
+                <input type="radio" id = "sym" name="game_mode" value="2"> Symmetric <br>
+                <div class="hide">
+                    <input type="radio" id = "asym" name="game_mode" value="1" > Asymmertic
+                </div>
+                <br>
                 <button onclick="update();">
                     Update!
                 </button>
             </div>
-
         </div>
         <div style=" width:100%; text-align:center;">
             <canvas name="canvas" id="canvas" style="border:1px solid #000000; display:inline;">
-            Your browser does not support the HTML5 canvas tag.
+                Your browser does not support the HTML5 canvas tag.
             </canvas>
         </div>
     </div>
