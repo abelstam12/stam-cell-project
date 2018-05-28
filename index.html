@@ -3,6 +3,8 @@
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="static/css/project.css">
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="static/script/stamcel.js"></script>
 </head>
 <body>
@@ -23,9 +25,11 @@
             </div>
         </div>
         <div style=" width:100%; text-align:center;">
-            <canvas name="canvas" id="canvas" style="border:1px solid #000000; display:inline;">
+            <canvas class="canvas" name="canvas" id="canvas">
                 Your browser does not support the HTML5 canvas tag.
             </canvas>
+            <div id="graph" class="graph">
+            </div>
         </div>
     </div>
 </body>

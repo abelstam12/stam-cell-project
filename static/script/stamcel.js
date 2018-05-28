@@ -13,7 +13,7 @@ let size = composition_matrix.length
 let possible_cells = [[0,1], [0,3], [1,0], [1,2] ,[1,4], [2,1], [2,3], [3,0], [3,2], [3,4], [4,1], [4,3]];
 
 // hardcoded ""
-let offspring = {blue: 0, red: 0, green: 0, yellow: 0, white: 0, purple: 0, orange: 0, brown: 0, blueviolet: 0, darkgreen: 0, grey: 0, cyan: 0};
+let offspring = {blue: [1], red: [1], green: [1], yellow: [1], white: [1], purple: [1], orange: [1], brown: [1], blueviolet: [1], darkgreen: [1], grey: [1], cyan: [1]};
 
 // select random element
 function select() {
@@ -39,6 +39,12 @@ function update() {
     let element = select();
     let x = element[0];
     let y = element[1];
+    // add to offspring
+    update_offspring(composition_matrix[x][y])
+    //let cell_offspring = offspring[composition_matrix[x][y]]
+    //let current_offspring = cell_offspring[cell_offspring.length - 1];
+    //cell_offspring.push(current_offspring + 1);
+    //console.log(offspring);
     flash(x, y);
     // symmetric
     if (gm == 2) {
@@ -46,7 +52,7 @@ function update() {
     } else {
         divide_asymmetric(x, y);
     }
-
+    plot_offspring();
     if(crypt_is_singular()) {
 
     }
@@ -74,7 +80,7 @@ function push_cells(x, y, direction) {
         cells.push([x + i * direction[0], y + i * direction[1]])
         i += 1;
     }
-    offspring[composition_matrix[cells[cells.length - 1][0]][cells[cells.length - 1][1]]] += 1
+    //offspring[composition_matrix[cells[cells.length - 1][0]][cells[cells.length - 1][1]]] += 1
     // shift each element in the specified direction
     cells = cells.reverse();
     for (let i = 0; i < cells.length - 1; i ++) {
@@ -91,7 +97,7 @@ function divide_symmetric(x, y) {
     if (hop_to[0] >= size || hop_to[1] >= size ||
         hop_to[0] < 0 || hop_to[1] < 0) {
         // add to the offspring
-        offspring[composition_matrix[x][y]] = offspring[composition_matrix[x][y]] + 1;
+        //offspring[composition_matrix[x][y]] = offspring[composition_matrix[x][y]] + 1;
         return;
     }
     push_cells(x, y, direction);
@@ -105,7 +111,7 @@ function random_element(list) {
 
 // offspring hops out of crypt without interaction with stem cells
 function divide_asymmetric(x, y) {
-    offspring[composition_matrix[x][y]] = offspring[composition_matrix[x][y]] + 1
+    //offspring[composition_matrix[x][y]] = offspring[composition_matrix[x][y]] + 1
 }
 
 
@@ -246,4 +252,47 @@ function zeros(dimensions) {
         array.push(dimensions.length == 1 ? 0 : zeros(dimensions.slice(1)));
     }
     return array;
+}
+
+function update_offspring(color) {
+    for (const [key, value] of Object.entries(offspring)) {
+        let current_offspring_size = offspring[key][offspring[key].length - 1];
+        console.log(current_offspring_size);
+        if (key == color) {
+            offspring[key].push(current_offspring_size + 1);
+        }
+        else {
+            offspring[key].push(current_offspring_size)
+        } 
+    }
+    console.log(offspring);
+}
+
+// graph results
+function get_x_interval(list) {
+    let x_values = [];
+    for (let i = 0; i < list.length; i++) {
+        x_values.push(i);
+    }
+    return x_values;
+}
+
+function plot_offspring() {
+    let data = []
+
+    for (const [key, value] of Object.entries(offspring)) {
+        let plot_specific_offspring = {
+            x: get_x_interval(value),
+            y: value,
+            mode: 'lines',
+            line: {
+                color: key,
+                width: 1,
+            }
+        }
+        console.log(plot_specific_offspring);
+        data.push(plot_specific_offspring);
+    }
+    console.log(data);
+    Plotly.newPlot('graph', data);
 }
