@@ -1,9 +1,10 @@
 // hardcoded matrix containing the composition of the crypt
-let composition_matrix = [[0,'blue','black','red',0],
-['green','black', 'yellow','black', 'white'],
-['black', 'purple', 'black','orange', 'black'],
-['brown', 'black', 'blueviolet', 'black', 'darkgreen'],
-[0, 'grey', 'black', 'cyan', 0]
+let composition_matrix = [
+    [0,'blue','black','red',0],
+    ['green','black', 'yellow','black', 'white'],
+    ['black', 'purple', 'black','orange', 'black'],
+    ['brown', 'black', 'blueviolet', 'black', 'darkgreen'],
+    [0, 'grey', 'black', 'cyan', 0]
 ]
 
 // matrix is N x N so no
@@ -11,14 +12,15 @@ let size = composition_matrix.length
 
 // hardcode possible dividers #TODO (specify on load for random matrix)
 let possible_cells = [
-    [0,1], [0,3], [1,0], [1,2] ,[1,4], 
+    [0,1], [0,3], [1,0], [1,2] ,[1,4],
     [2,1], [2,3], [3,0], [3,2], [3,4], [4,1], [4,3]
 ];
 
 // hardcoded ""
 let offspring = {
-    blue: [1], red: [1], green: [1], yellow: [1], white: [1], purple: [1], 
-    orange: [1], brown: [1], blueviolet: [1], darkgreen: [1], grey: [1], cyan: [1]
+    blue: [1], red: [1], green: [1], yellow: [1],
+    white: [1], purple: [1], orange: [1], brown: [1],
+    blueviolet: [1], darkgreen: [1], grey: [1], cyan: [1]
 };
 
 
@@ -44,12 +46,12 @@ function update() {
     document.getElementById('sym').disabled = true;
     document.getElementById('asym').disabled = true;
 
-    draw_matrix(composition_matrix)
+    draw_matrix(composition_matrix);
     let element = select();
     let x = element[0];
     let y = element[1];
     // add to offspring
-    update_offspring(composition_matrix[x][y])
+    update_offspring(composition_matrix[x][y]);
     // flash cell that will devide
     flash(x, y);
     // symmetric
@@ -72,7 +74,7 @@ function crypt_is_singular() {
         check_if_singular = check_if_singular.concat(composition_matrix[i]);
     }
     console.log('check array sing', check_if_singular);
-    let prev_element = check_if_singular[0]
+    let prev_element = check_if_singular[0];
     for (let i = 1; i < check_if_singular.length; i++) {
         let element = check_if_singular[i];
         console.log(prev_element, element);
@@ -108,14 +110,14 @@ function push_cells(x, y, direction) {
     cells = cells.reverse();
     for (let i = 0; i < cells.length - 1; i ++) {
         composition_matrix[cells[i][0]][cells[i][1]] = 
-        composition_matrix[cells[i + 1][0]][cells[i + 1][1]]
+        composition_matrix[cells[i + 1][0]][cells[i + 1][1]];
     }
 }
 
 function divide_symmetric(x, y) {
     // one cell remains on the same position, other cell has to find a new place
-    direction = [random_element([1, -1]), random_element([1, -1])]
-    hop_to = [x +direction[0], y + direction[1]]
+    direction = [random_element([1, -1]), random_element([1, -1])];
+    hop_to = [x +direction[0], y + direction[1]];
 
     push_cells(x, y, direction);
     return;
