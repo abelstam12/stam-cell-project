@@ -10,10 +10,16 @@ let composition_matrix = [[0,'blue','black','red',0],
 let size = composition_matrix.length
 
 // hardcode possible dividers #TODO (specify on load for random matrix)
-let possible_cells = [[0,1], [0,3], [1,0], [1,2] ,[1,4], [2,1], [2,3], [3,0], [3,2], [3,4], [4,1], [4,3]];
+let possible_cells = [
+    [0,1], [0,3], [1,0], [1,2] ,[1,4], 
+    [2,1], [2,3], [3,0], [3,2], [3,4], [4,1], [4,3]
+];
 
 // hardcoded ""
-let offspring = {blue: [1], red: [1], green: [1], yellow: [1], white: [1], purple: [1], orange: [1], brown: [1], blueviolet: [1], darkgreen: [1], grey: [1], cyan: [1]};
+let offspring = {
+    blue: [1], red: [1], green: [1], yellow: [1], white: [1], purple: [1], 
+    orange: [1], brown: [1], blueviolet: [1], darkgreen: [1], grey: [1], cyan: [1]
+};
 
 // select random element
 function select() {
@@ -76,15 +82,16 @@ function crypt_is_singular() {
 function push_cells(x, y, direction) {
     cells = [];
     i = 0;
-    while (x + i * direction[0] < size && y + i * direction[1] < size && x + i * direction[0] >= 0 && y + i * direction[1] >=0) {
+    while (x + i * direction[0] < size && y + i * direction[1] < size 
+        && x + i * direction[0] >= 0 && y + i * direction[1] >=0) {
         cells.push([x + i * direction[0], y + i * direction[1]])
         i += 1;
     }
-    //offspring[composition_matrix[cells[cells.length - 1][0]][cells[cells.length - 1][1]]] += 1
     // shift each element in the specified direction
     cells = cells.reverse();
     for (let i = 0; i < cells.length - 1; i ++) {
-        composition_matrix[cells[i][0]][cells[i][1]] = composition_matrix[cells[i + 1][0]][cells[i + 1][1]]
+        composition_matrix[cells[i][0]][cells[i][1]] = 
+        composition_matrix[cells[i + 1][0]][cells[i + 1][1]]
     }
 }
 
@@ -93,13 +100,7 @@ function divide_symmetric(x, y) {
     direction = [random_element([1, -1]), random_element([1, -1])]
     hop_to = [x +direction[0], y + direction[1]]
     console.log(x, y, hop_to);
-    // hop out of matrix
-    if (hop_to[0] >= size || hop_to[1] >= size ||
-        hop_to[0] < 0 || hop_to[1] < 0) {
-        // add to the offspring
-        //offspring[composition_matrix[x][y]] = offspring[composition_matrix[x][y]] + 1;
-        return;
-    }
+
     push_cells(x, y, direction);
     return;
 }
@@ -287,7 +288,7 @@ function plot_offspring() {
             mode: 'lines',
             line: {
                 color: key,
-                width: 1,
+                width: 3,
             }
         }
         console.log(plot_specific_offspring);
