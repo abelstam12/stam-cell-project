@@ -1,19 +1,30 @@
 // hardcoded matrix containing the composition of the crypt
-let composition_matrix = [[0,'blue','black','red',0],
-['green','black', 'yellow','black', 'white'],
-['black', 'purple', 'black','orange', 'black'],
-['brown', 'black', 'blueviolet', 'black', 'darkgreen'],
-[0, 'grey', 'black', 'cyan', 0]
+let composition_matrix = [
+    [0,'blue','black','red',0],
+    ['green','black', 'yellow','black', 'white'],
+    ['black', 'purple', 'black','orange', 'black'],
+    ['brown', 'black', 'blueviolet', 'black', 'darkgreen'],
+    [0, 'grey', 'black', 'cyan', 0]
 ]
 
 // matrix is N x N so no
 let size = composition_matrix.length
 
 // hardcode possible dividers #TODO (specify on load for random matrix)
-let possible_cells = [[0,1], [0,3], [1,0], [1,2] ,[1,4], [2,1], [2,3], [3,0], [3,2], [3,4], [4,1], [4,3]];
+let possible_cells = [
+    [0,1], [0,3], [1,0], [1,2] ,[1,4],
+    [2,1], [2,3], [3,0], [3,2], [3,4], [4,1], [4,3]
+];
 
 // hardcoded ""
-let offspring = {blue: 0, red: 0, green: 0, yellow: 0, white: 0, purple: 0, orange: 0, brown: 0, blueviolet: 0, darkgreen: 0, grey: 0, cyan: 0};
+let offspring = {
+    blue: [1], red: [1], green: [1], yellow: [1],
+    white: [1], purple: [1], orange: [1], brown: [1],
+    blueviolet: [1], darkgreen: [1], grey: [1], cyan: [1]
+};
+
+
+let update_count = 0;
 
 // select random element
 function select() {
@@ -35,10 +46,13 @@ function update() {
     document.getElementById('sym').disabled = true;
     document.getElementById('asym').disabled = true;
 
-    draw_matrix(composition_matrix)
+    draw_matrix(composition_matrix);
     let element = select();
     let x = element[0];
     let y = element[1];
+    // add to offspring
+    update_offspring(composition_matrix[x][y]);
+    // flash cell that will devide
     flash(x, y);
     // symmetric
     if (gm == 2) {
@@ -46,54 +60,65 @@ function update() {
     } else {
         divide_asymmetric(x, y);
     }
-
+    update_count += 1;
+    plot_offspring();
     if(crypt_is_singular()) {
 
     }
 }
 
+// return boolean corresponging to 
 function crypt_is_singular() {
-    prev_element = composition_matrix[0][0]
-    for (let row in composition_matrix) {
-        for (let element in row) {
-            if (element != 0 && emement != 'black') {
-                if (prev_element != element) {
-                    return false;
-                }
-            }
+    let check_if_singular = []
+    for(let i = 0; i < composition_matrix.length; i++) {
+        check_if_singular = check_if_singular.concat(composition_matrix[i]);
+    }
+    console.log('check array sing', check_if_singular);
+    let prev_element = check_if_singular[0];
+    for (let i = 1; i < check_if_singular.length; i++) {
+        let element = check_if_singular[i];
+        console.log(prev_element, element);
+        if (is_valid_cell(element) && is_valid_cell(prev_element)
+        && prev_element != element) {
+            console.log('false');
+            return false;
+        }
+        if (is_valid_cell(element)) {
+            prev_element = element;
         }
     }
     return true;
+}
+
+function is_valid_cell(cell) {
+    if (cell != 0 && cell != 'black' ) {
+        return true;
+    }
+    return false;
 }
 
 // pushes the cells in front of dividing cell towards the edge of the crypt
 function push_cells(x, y, direction) {
     cells = [];
     i = 0;
-    while (x + i * direction[0] < size && y + i * direction[1] < size && x + i * direction[0] >= 0 && y + i * direction[1] >=0) {
+    while (x + i * direction[0] < size && y + i * direction[1] < size 
+        && x + i * direction[0] >= 0 && y + i * direction[1] >=0) {
         cells.push([x + i * direction[0], y + i * direction[1]])
         i += 1;
     }
-    offspring[composition_matrix[cells[cells.length - 1][0]][cells[cells.length - 1][1]]] += 1
     // shift each element in the specified direction
     cells = cells.reverse();
     for (let i = 0; i < cells.length - 1; i ++) {
-        composition_matrix[cells[i][0]][cells[i][1]] = composition_matrix[cells[i + 1][0]][cells[i + 1][1]]
+        composition_matrix[cells[i][0]][cells[i][1]] = 
+        composition_matrix[cells[i + 1][0]][cells[i + 1][1]];
     }
 }
 
 function divide_symmetric(x, y) {
     // one cell remains on the same position, other cell has to find a new place
-    direction = [random_element([1, -1]), random_element([1, -1])]
-    hop_to = [x +direction[0], y + direction[1]]
-    console.log(x, y, hop_to);
-    // hop out of matrix
-    if (hop_to[0] >= size || hop_to[1] >= size ||
-        hop_to[0] < 0 || hop_to[1] < 0) {
-        // add to the offspring
-        offspring[composition_matrix[x][y]] = offspring[composition_matrix[x][y]] + 1;
-        return;
-    }
+    direction = [random_element([1, -1]), random_element([1, -1])];
+    hop_to = [x +direction[0], y + direction[1]];
+
     push_cells(x, y, direction);
     return;
 }
@@ -105,7 +130,7 @@ function random_element(list) {
 
 // offspring hops out of crypt without interaction with stem cells
 function divide_asymmetric(x, y) {
-    offspring[composition_matrix[x][y]] = offspring[composition_matrix[x][y]] + 1
+    //offspring[composition_matrix[x][y]] = offspring[composition_matrix[x][y]] + 1
 }
 
 
@@ -118,44 +143,6 @@ function flash(x, y) {
     offset = get_offset(x,y);
     roundRect(canvas, offset[0], offset[1], 50, 50, 20, true)
     setTimeout(function() {draw_matrix(composition_matrix)}, 400);
-}
-
-// get random stem cell neighbour which can be replaced
-// stem cells can hop one black cel but not replace a black cel
-function getStemNeighbour(x, y) {
-    // should be easier, if element 0 hops to left, hop to last element
-    if (y - 1 == -1 ) {
-        possible_hops = [[x, size], [x, (y + 1) % size]]
-    }
-    possible_hops = [[x, y - 1], [x, (y + 1) % size]]
-    // should be easier
-    if (x == 1) {
-        if (y == 0) {
-            possible_hops.push([1, 3])
-        }
-        if (y == 3) {
-            possible_hops.push([1, 0])
-        }
-        if (x + 2 < composition_matrix.lenth) {
-            possible_hops.push([(x + 2), y])
-        }
-        if (x - 2 > -1) {
-            possible_hops.push([x-2, y])
-        }
-    }
-    let index = Math.floor(Math.random() * possible_hops.length)
-    let random_neighbour = possible_hops[index];
-    // while random neighbour is invalid hop candidate
-    console.log('random neighbours ' + random_neighbour)
-    console.log(composition_matrix[random_neighbour[0]])
-    while(composition_matrix[random_neighbour[0]][random_neighbour[1]] == undefined || 
-        composition_matrix[random_neighbour[0]][random_neighbour[1]] == 'black' ||
-        composition_matrix[random_neighbour[0]][random_neighbour[1]] == 0){
-        possible_hops.splice(index, 1)
-        index = Math.floor(Math.random() * possible_hops.length)
-        random_neighbour = possible_hops[index];
-    }
-    return random_neighbour
 }
 
 function getGameMode() {
@@ -246,4 +233,43 @@ function zeros(dimensions) {
         array.push(dimensions.length == 1 ? 0 : zeros(dimensions.slice(1)));
     }
     return array;
+}
+
+function update_offspring(color) {
+    for (const [key, value] of Object.entries(offspring)) {
+        let current_offspring_size = offspring[key][offspring[key].length - 1];
+        if (key == color) {
+            offspring[key].push(current_offspring_size + 1);
+        }
+        else {
+            offspring[key].push(current_offspring_size)
+        } 
+    }
+}
+
+// graph results
+function get_x_interval(list) {
+    let x_values = [];
+    for (let i = 0; i < list.length; i++) {
+        x_values.push(i);
+    }
+    return x_values;
+}
+
+function plot_offspring() {
+    let data = []
+
+    for (const [key, value] of Object.entries(offspring)) {
+        let plot_specific_offspring = {
+            x: get_x_interval(value),
+            y: value,
+            mode: 'lines',
+            line: {
+                color: key,
+                width: 3,
+            }
+        }
+        data.push(plot_specific_offspring);
+    }
+    Plotly.newPlot('graph', data);
 }
