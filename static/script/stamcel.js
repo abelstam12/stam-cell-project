@@ -77,10 +77,8 @@ function crypt_is_singular() {
     let prev_element = check_if_singular[0]
     for (let i = 1; i < check_if_singular.length; i++) {
         let element = check_if_singular[i];
-        console.log(prev_element, element);
         if (is_valid_cell(element) && is_valid_cell(prev_element)
         && prev_element != element) {
-            console.log('false');
             return false;
         }
         if (is_valid_cell(element)) {
@@ -276,13 +274,10 @@ function plot_offspring() {
     Plotly.newPlot('graph', data);
 }
 
-
+// copy dynamic canvas to static ones
 function draw_dynamic_canvas() {
-    console.log('static_canvas' + update_count);
     let destinationCanvas = document.getElementById('static_canvas' + update_count);
-    //grab the context from your destination canvas
     let destCtx = destinationCanvas.getContext('2d');
     let sourceCanvas = document.getElementById('canvas');
-    //call its drawImage() function passing it the source canvas directly
     destCtx.drawImage(sourceCanvas, 0, 0);
 }
