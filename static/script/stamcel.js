@@ -68,10 +68,9 @@ function update() {
 // return boolean corresponging to 
 function crypt_is_singular() {
     let check_if_singular = []
-    for(let i = 0; i < composition_matrix.length; i++) {
+    for(let i = 0; i < size; i++) {
         check_if_singular = check_if_singular.concat(composition_matrix[i]);
     }
-    console.log('check array sing', check_if_singular);
     let prev_element = check_if_singular[0]
     for (let i = 1; i < check_if_singular.length; i++) {
         let element = check_if_singular[i];
