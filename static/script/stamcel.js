@@ -45,6 +45,10 @@ function update() {
     document.getElementById('asym').disabled = true;
 
     draw_matrix(composition_matrix)
+    // draw static canvas
+    if (update_count < 10) {
+        draw_dynamic_canvas();
+    }
     let element = select();
     let x = element[0];
     let y = element[1];
@@ -63,9 +67,7 @@ function update() {
     if(crypt_is_singular()) {
 
     }
-    if (update_count < 10) {
-        draw_dynamic_canvas();
-    }
+
 }
 
 // return boolean corresponging to 
@@ -155,10 +157,8 @@ function getGameMode() {
 
 // set canvas size
 window.onload = window.onresize = function() {
-    var canvas = document.getElementById('canvas');
-    document.getElementById('canvas_graph_row').height = window.innerHeight * 0.8;
-    console.log(document.getElementById('canvas_container').innerWidth)
-    //canvas.width = document.getElementById('canvas_container').width * 0.9;
+    let canvas = document.getElementById('canvas');
+    document.getElementById('canvas_graph_row').height = window.innerHeight * 0.5;
     canvas.height = document.getElementById('canvas_graph_row').height;
     
     draw_matrix(composition_matrix);
@@ -277,6 +277,9 @@ function plot_offspring() {
 // copy dynamic canvas to static ones
 function draw_dynamic_canvas() {
     let destinationCanvas = document.getElementById('static_canvas' + update_count);
+    destinationCanvas.style.display = "inline";
+    destinationCanvas.height = document.getElementById('canvas').height;
+    console.log(destinationCanvas.height);
     let destCtx = destinationCanvas.getContext('2d');
     let sourceCanvas = document.getElementById('canvas');
     destCtx.drawImage(sourceCanvas, 0, 0);
