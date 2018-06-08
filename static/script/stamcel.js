@@ -63,6 +63,9 @@ function update() {
     if(crypt_is_singular()) {
 
     }
+    if (update_count < 10) {
+        draw_dynamic_canvas();
+    }
 }
 
 // return boolean corresponging to 
@@ -152,12 +155,14 @@ function getGameMode() {
     }
 }
 
-// set canvas size and initial probability
+// set canvas size
 window.onload = window.onresize = function() {
     var canvas = document.getElementById('canvas');
-    canvas.width = window.innerWidth * 0.8;
-    canvas.height = window.innerHeight * 0.8;
-    // set probability
+    document.getElementById('canvas_graph_row').height = window.innerHeight * 0.8;
+    console.log(document.getElementById('canvas_container').innerWidth)
+    //canvas.width = document.getElementById('canvas_container').width * 0.9;
+    canvas.height = document.getElementById('canvas_graph_row').height;
+    
     draw_matrix(composition_matrix);
 }
 
@@ -269,4 +274,15 @@ function plot_offspring() {
         data.push(plot_specific_offspring);
     }
     Plotly.newPlot('graph', data);
+}
+
+
+function draw_dynamic_canvas() {
+    console.log('static_canvas' + update_count);
+    let destinationCanvas = document.getElementById('static_canvas' + update_count);
+    //grab the context from your destination canvas
+    let destCtx = destinationCanvas.getContext('2d');
+    let sourceCanvas = document.getElementById('canvas');
+    //call its drawImage() function passing it the source canvas directly
+    destCtx.drawImage(sourceCanvas, 0, 0);
 }

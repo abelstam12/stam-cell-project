@@ -10,7 +10,7 @@
 <body>
     <div class="button_menu">
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-">
                 Divide mechanism:
                 <br>
                 <input type="radio" id = "sym" name="game_mode" value="2"> Symmetric 
@@ -24,12 +24,44 @@
                 </button>
             </div>
         </div>
-        <div style=" width:100%; text-align:center;">
-            <canvas class="canvas" name="canvas" id="canvas">
+        <div class="row" id="canvas_graph_row">
+            <div id="canvas_container" class="col-sm-4">
+                <canvas class="canvas" name="canvas" id="canvas">
+                    Your browser does not support the HTML5 canvas tag.
+                </canvas>
+            </div>
+            <div id="graph" class="graph col-sm-8">
+            </div>
+        </div>
+        <div class="row">
+            <canvas class="canvas" name="canvas" id="static_canvas1">
                 Your browser does not support the HTML5 canvas tag.
             </canvas>
-            <div id="graph" class="graph">
-            </div>
+        </div>
+        <div class="row">
+            <canvas class="canvas" name="canvas" id="static_canvas2">
+                Your browser does not support the HTML5 canvas tag.
+            </canvas>
+        </div>
+        <div class="row">
+            <canvas class="canvas" name="canvas" id="static_canvas3">
+                Your browser does not support the HTML5 canvas tag.
+            </canvas>
+        </div>
+        <div class="row">
+            <canvas class="canvas" name="canvas" id="static_canvas4">
+                Your browser does not support the HTML5 canvas tag.
+            </canvas>
+        </div>
+        <div class="row">
+            <canvas class="canvas" name="canvas" id="static_canvas5">
+                Your browser does not support the HTML5 canvas tag.
+            </canvas>
+        </div>
+        <div class="row">
+            <canvas class="canvas" name="canvas" id="static_canvas6">
+                Your browser does not support the HTML5 canvas tag.
+            </canvas>
         </div>
     </div>
 </body>
