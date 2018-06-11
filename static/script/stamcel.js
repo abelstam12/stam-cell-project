@@ -1,9 +1,10 @@
 // hardcoded matrix containing the composition of the crypt
-let composition_matrix = [[0,'blue','black','red',0],
-['green','black', 'yellow','black', 'white'],
-['black', 'purple', 'black','orange', 'black'],
-['brown', 'black', 'blueviolet', 'black', 'darkgreen'],
-[0, 'grey', 'black', 'cyan', 0]
+let composition_matrix = [
+    [0,'blue','black','red',0],
+    ['green','black', 'yellow','black', 'white'],
+    ['black', 'purple', 'black','orange', 'black'],
+    ['brown', 'black', 'blueviolet', 'black', 'darkgreen'],
+    [0, 'grey', 'black', 'cyan', 0]
 ]
 
 // matrix is N x N so no
@@ -21,6 +22,17 @@ let offspring = {
     orange: [1], brown: [1], blueviolet: [1], darkgreen: [1], grey: [1], cyan: [1]
 };
 
+/*
+* not prettiest solution, but does the job for now to specify direction innercells 
+* can divide to. Not that the y direction is flipped in the animation
+* which still needs to be fixed.
+*/
+let divide_direction = {
+    '2,1': [[-1, -1], [1, -1]], 
+    '1,2': [[-1, -1], [-1, 1]], 
+    '3,2': [[1, -1], [1, 1]], 
+    '2,3': [[-1, 1], [1, 1]]
+}
 
 let update_count = 0;
 
@@ -35,7 +47,7 @@ function update() {
     // get gamemode
     gm = getGameMode();
     if (gm == undefined) {
-        alert('Select divide mechanism');
+        alert('Select divide direction');
         document.getElementById('sym').disabled = false;
         document.getElementById('asym').disabled = false;
         return;
@@ -116,6 +128,7 @@ function push_cells(x, y, direction) {
 
 function divide_symmetric(x, y) {
     // one cell remains on the same position, other cell has to find a new place
+
     direction = [random_element([1, -1]), random_element([1, -1])]
     hop_to = [x +direction[0], y + direction[1]]
 
@@ -130,9 +143,27 @@ function random_element(list) {
 
 // offspring hops out of crypt without interaction with stem cells
 function divide_asymmetric(x, y) {
-    //offspring[composition_matrix[x][y]] = offspring[composition_matrix[x][y]] + 1
+    if (is_outer_ring(x, y)) {
+        // outer rim cells just divide to outside of crypt
+        return;
+    }
+    options = divide_direction[ x +"," + y]
+    console.log(options)
+    index =  Math.floor(Math.random() * options.length);
+    direction =  options[index];
+    hop_to = [x + direction[1], y + direction[0]];
+    console.log(hop_to)
+    push_cells(x, y, direction);
+    return;
 }
 
+// check if element is on the edge of the crypt
+function is_outer_ring(x, y) {
+    if (x == 0 || x == size -1 || y == 0 || y == size -1) {
+        return true;
+    }
+    return false;
+}
 
 // flash selected element
 function flash(x, y) {
@@ -279,7 +310,6 @@ function draw_dynamic_canvas() {
     let destinationCanvas = document.getElementById('static_canvas' + update_count);
     destinationCanvas.style.display = "inline";
     destinationCanvas.height = document.getElementById('canvas').height;
-    console.log(destinationCanvas.height);
     let destCtx = destinationCanvas.getContext('2d');
     let sourceCanvas = document.getElementById('canvas');
     destCtx.drawImage(sourceCanvas, 0, 0);

@@ -7,6 +7,10 @@
     display:inline;
 }
 
+.button_menu {
+    padding:5px;
+}
+
 .static_canvas {
     margin: auto;
     border:1px solid #000000;

@@ -11,13 +11,11 @@
     <div class="button_menu">
         <div class="row">
             <div class="col-sm-">
-                Divide mechanism:
+                Direction:
                 <br>
-                <input type="radio" id = "sym" name="game_mode" value="2"> Symmetric 
+                <input type="radio" id = "sym" name="game_mode" value="2"> Random 
                 <br>
-                <div class="hide">
-                    <input type="radio" id = "asym" name="game_mode" value="1" > Asymmertic
-                </div>
+                <input type="radio" id = "asym" name="game_mode" value="1" > Outward
                 <br>
                 <button onclick="update();">
                     Divide!
@@ -33,6 +31,7 @@
             <div id="graph" class="graph col-sm-8">
             </div>
         </div>
+        <!-- First ten steps are displayed here -->
         <div class="row canvas_row">
             <canvas class="static_canvas" name="canvas" id="static_canvas0">
                 Your browser does not support the HTML5 canvas tag.
