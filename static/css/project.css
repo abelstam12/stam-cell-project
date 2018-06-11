@@ -1,7 +1,22 @@
-.button_menu{
-    padding:5px;
-}
-
 .hide {
     display: none;
+}
+
+.canvas {
+    border:1px solid #000000; 
+    display:inline;
+}
+
+.static_canvas {
+    margin: auto;
+    border:1px solid #000000;
+    display: none;
+}
+
+.row {
+    padding:15px;
+}
+
+.graph {
+    
 }
