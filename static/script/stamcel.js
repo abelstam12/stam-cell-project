@@ -58,7 +58,7 @@ function update() {
 
     draw_matrix(composition_matrix)
     // draw static canvas
-    if (update_count < 10) {
+    if (update_count < 25) {
         draw_dynamic_canvas();
     }
     let element = select();
@@ -191,7 +191,9 @@ window.onload = window.onresize = function() {
     let canvas = document.getElementById('canvas');
     document.getElementById('canvas_graph_row').height = window.innerHeight * 0.5;
     canvas.height = document.getElementById('canvas_graph_row').height;
-    
+    let canvas_static = document.getElementById('static_canvas0');
+    canvas_static.width = window.innerWidth * 0.9;
+    canvas_static.height = window.innerWidth * 0.9;
     draw_matrix(composition_matrix);
 }
 
@@ -307,10 +309,9 @@ function plot_offspring() {
 
 // copy dynamic canvas to static ones
 function draw_dynamic_canvas() {
-    let destinationCanvas = document.getElementById('static_canvas' + update_count);
+    let destinationCanvas = document.getElementById('static_canvas0');
     destinationCanvas.style.display = "inline";
-    destinationCanvas.height = document.getElementById('canvas').height;
     let destCtx = destinationCanvas.getContext('2d');
     let sourceCanvas = document.getElementById('canvas');
-    destCtx.drawImage(sourceCanvas, 0, 0);
+    destCtx.drawImage(sourceCanvas, (update_count %  5) * 150 +5, Math.floor(update_count /  5) * 150 + 5, 150, 150);
 }
