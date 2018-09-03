@@ -1,7 +1,7 @@
 // hardcoded matrix containing the composition of the crypt
 let composition_matrix = [
     [0,'blue','black','red',0],
-    ['green','black', 'yellow','black', 'white'],
+    ['green','black', 'yellow','black', 'teal'],
     ['black', 'purple', 'black','orange', 'black'],
     ['brown', 'black', 'blueviolet', 'black', 'darkgreen'],
     [0, 'grey', 'black', 'cyan', 0]
